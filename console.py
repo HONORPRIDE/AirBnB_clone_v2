@@ -88,7 +88,7 @@ class HBNBCommand(cmd.Cmd):
 
     def postcmd(self, stop, line):
         """Prints if isatty is false"""
-                if not sys.__stdin__.isatty():
+        if not sys.__stdin__.isatty():
             print('(hbnb) ', end='')
         return stop
 
@@ -128,7 +128,7 @@ class HBNBCommand(cmd.Cmd):
                 kw[arg_splited[0]] = arg_splited[1]
         except SyntaxError:
             print("** class name missing **")
-            except NameError:
+        except NameError:
             print("** class doesn't exist **")
         new_instance = HBNBCommand.classes[arg_list[0]](**kw)
         new_instance.save()
@@ -168,7 +168,7 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
 
     def help_show(self):
-            """ Help information for the show command """
+        """ Help information for the show command """
         print("Shows an individual instance of a class")
         print("[Usage]: show <className> <objectId>\n")
 
@@ -208,6 +208,7 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
         print_list = []
+
         if args:
             args = args.split(' ')[0]  # remove possible trailing args
             if args not in HBNBCommand.classes:
@@ -251,6 +252,7 @@ class HBNBCommand(cmd.Cmd):
         if c_name not in HBNBCommand.classes:  # class name invalid
             print("** class doesn't exist **")
             return
+
         # isolate id from args
         args = args[2].partition(" ")
         if args[0]:
@@ -284,14 +286,7 @@ class HBNBCommand(cmd.Cmd):
             args = args.partition(' ')
 
             # if att_name was not quoted arg
-                if not att_name and args[0] != ' ':
-                att_name = args[0]
-            # check for quoted val arg
-                if args[2] and args[2][0] == '\"':
-                att_val = args[2][1:args[2].find('\"', 1)]
-
-            # if att_val was not quoted arg
-                if not att_name and args[0] != ' ':
+            if not att_name and args[0] != ' ':
                 att_name = args[0]
             # check for quoted val arg
             if args[2] and args[2][0] == '\"':
@@ -325,6 +320,7 @@ class HBNBCommand(cmd.Cmd):
                 new_dict.__dict__.update({att_name: att_val})
 
         new_dict.save()  # save updates to file
+
     def help_update(self):
         """ Help information for the update class """
         print("Updates an object with new information")
