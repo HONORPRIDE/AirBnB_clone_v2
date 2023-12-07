@@ -21,31 +21,29 @@ chown -R ubuntu:ubuntu /data/
 config_block="
 server {
     listen 80 default_server;
-        listen [::]:80 default_server;
-	    add_header X-Served-By \$HOSTNAME;
-	        root /var/www/html;
-		    index index.html index.htm;
+    listen [::]:80 default_server;
+    add_header X-Served-By \$HOSTNAME;
+    root /var/www/html;
+    index index.html index.htm;
+    
+    	location /hbnb_static {
+			alias /data/web_static/current;
+				}
 
-		        location /hbnb_static {
-			        alias /data/web_static/current;
-				    }
+	location /redirect_me {
+			return 301 https://www.linkedin.com/in/honor-pride-865789196/;
+				}
 
-			        location /redirect_me {
-				        return 301 https://www.linkedin.com/in/honor-pride-865789196/;
-					    }
-
-				        error_page 404 /404.html;
-					    location /404 {
-					            root /var/www/html;
-						            internal;
-							        }
+	error_page 404 /404.html;
+	location /404 {
+		root /var/www/html;
+		internal;
+			}
 						}"
+# Check if the config block already exists in the Nginx configuration
+if ! grep -q "location /hbnb_static {" /etc/nginx/sites-available/default; then
+	echo "$config_block" >> /etc/nginx/sites-available/default
+fi
 
-					# Check if the config block already exists in the Nginx configuration
-					if ! grep -q "location /hbnb_static {" /etc/nginx/sites-available/default; then
-						    echo "$config_block" >> /etc/nginx/sites-available/default
-					fi
-
-					# Restart Nginx
-					service nginx restart
-
+# Restart Nginx
+service nginx restart
